@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.R;
 
 /**
@@ -16,7 +17,7 @@ import com.udacity.popularmovies.R;
  */
 public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.MoviePosterAdapterViewHolder> {
 
-    private Bitmap[] mMovieData;
+    private String[] mMovieData;
 
     public MoviePosterAdapter() {
 
@@ -61,14 +62,16 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
      * details for this particular position, using the "position" argument that is conveniently
      * passed into us.
      *
-     * @param MoviePosterAdapterViewHolder The ViewHolder which should be updated to represent the
+     * @param mMoviePosterAdapterViewHolder The ViewHolder which should be updated to represent the
      *                                  contents of the item at the given position in the data set.
      * @param position                  The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(MoviePosterAdapterViewHolder MoviePosterAdapterViewHolder, int position) {
-        Bitmap moviePoster = mMovieData[position];
-        MoviePosterAdapterViewHolder.mImageView.setImageBitmap(moviePoster);
+    public void onBindViewHolder(MoviePosterAdapterViewHolder mMoviePosterAdapterViewHolder, int position) {
+        final String MOVIE_URL = "http://image.tmdb.org/t/p/w185";
+        String poster_path = mMovieData[position];
+        Context context =  mMoviePosterAdapterViewHolder.mImageView.getContext();
+        Picasso.with(context).load(MOVIE_URL + poster_path).into(mMoviePosterAdapterViewHolder.mImageView);
     }
 
     /**
@@ -89,7 +92,7 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
      *
      * @param movieData The new movie data to be displayed.
      */
-    public void setMovieData(Bitmap[] movieData) {
+    public void setMovieData(String[] movieData) {
         mMovieData = movieData;
         notifyDataSetChanged();
     }

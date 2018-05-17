@@ -5,8 +5,11 @@ package com.udacity.popularmovies.utils;
  */
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.HttpURLConnection;
 
 
 /**
@@ -15,22 +18,33 @@ import org.json.JSONException;
 public final class MovieJsonUtils {
 
     /**
-     * This method parses JSON from a web response and returns an array of bitmaps
+     * This method parses JSON from a web response and returns an array of movie poster url
      * representing movie poster.
      * <p/>
      * @param movieJsonStr JSON response from server
      *
-     * @return Array of Bitmaps describing posters
+     * @return Array of Strings with the link to poster jpeg
      *
      * @throws JSONException If JSON data cannot be properly parsed
      */
-    public static Bitmap[] getBitmapFromJson(Context context, String movieJsonStr)
+    public static String[] getMoviePosterStringsFromJson(Context context, String movieJsonStr)
             throws JSONException {
 
+        final String MOVIE_RESULTS = "results";
+        final String POSTER_PATH = "poster_path";
 
+        /* String array to hold movie poster String */
+        String[] parsedMovieData = null;
 
-        return null;
-
+        JSONObject movieJson = new JSONObject(movieJsonStr);
+        JSONArray resultsArray = movieJson.getJSONArray(MOVIE_RESULTS);
+        parsedMovieData = new String[resultsArray.length()];
+        for (int i = 0; i < resultsArray.length(); i++) {
+             /* Get the JSON object representing a movie */
+            JSONObject movie = resultsArray.getJSONObject(i);
+            parsedMovieData[i] = movie.getString(POSTER_PATH);
+        }
+        return parsedMovieData;
     }
 
 

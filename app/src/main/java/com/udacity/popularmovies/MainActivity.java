@@ -15,18 +15,23 @@ import com.udacity.popularmovies.utils.MovieJsonUtils;
 import com.udacity.popularmovies.utils.NetworkUtils;
 
 import java.net.URL;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
     private MoviePosterAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
+
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        ButterKnife.bind(this);
+
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -37,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        String[] myDataset = {"test1", "test2", "test3", "test4"};
+
         mAdapter = new MoviePosterAdapter();
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
@@ -80,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         return(super.onOptionsItemSelected(item));
     }
 
-    public class FetchMoviePosterTask extends AsyncTask<String, Void, Bitmap[]> {
+    public class FetchMoviePosterTask extends AsyncTask<String, Void, String[]> {
 
         @Override
         protected void onPreExecute() {
@@ -88,24 +93,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Bitmap[] doInBackground(String... params) {
+        protected String[] doInBackground(String... params) {
 
-            /* If there's no zip code, there's nothing to look up. */
+            /* If there's no sort_by, there's nothing to look up. */
             if (params.length == 0) {
                 return null;
             }
 
-            String location = params[0];
-            URL movieRequestUrl = NetworkUtils.buildUrl(location);
+            String sort_by = params[0];
+            URL movieRequestUrl = NetworkUtils.buildUrl(sort_by);
 
             try {
-                String jsonMovieDataResponse = NetworkUtils
+                String jsonResponse = NetworkUtils
                         .getResponseFromHttpUrl(movieRequestUrl);
 
-                Bitmap[] simpleJsonMovieData = MovieJsonUtils
-                        .getBitmapFromJson(MainActivity.this, jsonMovieDataResponse);
+                String[] jsonMoviePosterData = MovieJsonUtils
+                        .getMoviePosterStringsFromJson(MainActivity.this, jsonResponse);
 
-                return simpleJsonMovieData;
+                return jsonMoviePosterData;
+                //String[] myDataset = {"test1", "test2", "test3", "test4", "test1", "test2", "test3", "test4", "test1", "test2", "test3", "test4"};
+                //return myDataset;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -114,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Bitmap[] movieData) {
+        protected void onPostExecute(String[] movieData) {
             if (movieData != null) {
                 mAdapter.setMovieData(movieData);
             } else {

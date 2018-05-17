@@ -45,7 +45,6 @@ public final class NetworkUtils {
 
     private static final String API_KEY = BuildConfig.ApiKey;
 
-
     private static final String language = "en-US";
 
     private static final String numPage = "1";
@@ -112,4 +111,5 @@ public final class NetworkUtils {
             urlConnection.disconnect();
         }
     }
+
 }
