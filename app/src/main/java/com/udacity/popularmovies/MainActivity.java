@@ -8,6 +8,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.udacity.popularmovies.model.MoviePosterAdapter;
@@ -26,26 +29,31 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.error_message_display)
+    TextView mErrorMessageDisplay;
+
+    @BindView(R.id.pb_loading_indicator)
+    ProgressBar mLoadingIndicator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
+        // use a grid layout manager
         mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
-
+        // specify an adapter
         mAdapter = new MoviePosterAdapter();
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
+
         loadMovieData();
 
     }
@@ -54,14 +62,32 @@ public class MainActivity extends AppCompatActivity {
      * This method will start the Async task.
      */
     private void loadMovieData() {
+        showMovieDataView();
         String default_sort_by = "popularity.desc";
         new FetchMoviePosterTask().execute(default_sort_by);
     }
+
     /**
-     * This method will make the error message visible
+     * This method will make the View for the movie data visible and
+     * hide the error message.
+     * <p>
+     * Since it is okay to redundantly set the visibility of a View, we don't
+     * need to check whether each view is currently visible or invisible.
+     */
+    private void showMovieDataView() {
+        /* First, make sure the error is invisible */
+        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+        /* Then, make sure the movie data is visible */
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * This method will make the error message visible and hide the weather
+     * View.
      */
     private void showErrorMessage() {
-        Toast.makeText(this, R.string.error_message, Toast.LENGTH_SHORT).show();
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -89,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            mLoadingIndicator.setVisibility(View.VISIBLE);
             super.onPreExecute();
         }
 
@@ -122,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String[] movieData) {
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (movieData != null) {
                 mAdapter.setMovieData(movieData);
             } else {
