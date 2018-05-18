@@ -23,6 +23,9 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String POPULAR = "popular";
+    private static final String TOP_RATED = "top_rated";
+
     private MoviePosterAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
 
@@ -54,17 +57,16 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
 
-        loadMovieData();
+        loadMovieData(POPULAR);
 
     }
 
     /**
      * This method will start the Async task.
      */
-    private void loadMovieData() {
+    private void loadMovieData(String type) {
         showMovieDataView();
-        String default_sort_by = "popularity.desc";
-        new FetchMoviePosterTask().execute(default_sort_by);
+        new FetchMoviePosterTask().execute(type);
     }
 
     /**
@@ -102,9 +104,11 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId()) {
             case R.id.most_popular:
                 Toast.makeText(this, R.string.most_popular, Toast.LENGTH_LONG).show();
+                loadMovieData(POPULAR);
                 return(true);
             case R.id.top_rated:
                 Toast.makeText(this, R.string.top_rated, Toast.LENGTH_LONG).show();
+                loadMovieData(TOP_RATED);
                 return(true);
 
         }
@@ -138,8 +142,6 @@ public class MainActivity extends AppCompatActivity {
                         .getMoviePosterStringsFromJson(MainActivity.this, jsonResponse);
 
                 return jsonMoviePosterData;
-                //String[] myDataset = {"test1", "test2", "test3", "test4", "test1", "test2", "test3", "test4", "test1", "test2", "test3", "test4"};
-                //return myDataset;
 
             } catch (Exception e) {
                 e.printStackTrace();

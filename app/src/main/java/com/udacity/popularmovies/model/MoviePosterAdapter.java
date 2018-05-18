@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.R;
 
+import java.util.ArrayList;
+
 /**
  * {@link MoviePosterAdapter} provides movie poster images to Recycler view.
  * {@link android.support.v7.widget.RecyclerView}
@@ -18,9 +20,15 @@ import com.udacity.popularmovies.R;
 public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.MoviePosterAdapterViewHolder> {
 
     private String[] mMovieData;
+    ArrayList mValues;
+    Context mContext;
+    protected ItemListener mListener;
 
-    public MoviePosterAdapter() {
+    public MoviePosterAdapter(Context context, ArrayList values, ItemListener itemListener) {
 
+        mValues = values;
+        mContext = context;
+        mListener=itemListener;
     }
 
 

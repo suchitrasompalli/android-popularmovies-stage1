@@ -41,36 +41,23 @@ public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String BASE_MOVIE_URL =
-            "https://api.themoviedb.org/3/discover/movie";
+            "https://api.themoviedb.org/3/movie/";
 
     private static final String API_KEY = BuildConfig.ApiKey;
 
-    private static final String language = "en-US";
-
-    private static final String numPage = "1";
-
     final static String API_KEY_PARAM = "api_key";
-    final static String LANG_PARAM = "language";
-    final static String SORT_PARAM = "sort_by";
-    final static String INCLUDE_ADULT_PARAM = "include_adult";
-    final static String INCLUDE_VIDEO_PARAM = "include_video";
-    final static String PAGE_PARAM = "page";
 
     /**
-     * Builds the URL used to talk to the weather server using a location. This location is based
-     * on the query capabilities of the weather provider that we are using.
+     * Builds the URL used to talk to the movie server using a result type.
+     * This location is based on the query capabilities of the moviedb provider
+     * that we are using.
      *
-     * @param sort_by The location that will be queried for.
-     * @return The URL to use to query the weather server.
+     * @param type The result type that will be queried for.
+     * @return The URL to use to query the moviedb server.
      */
-    public static URL buildUrl(String sort_by) {
-        Uri builtUri = Uri.parse(BASE_MOVIE_URL).buildUpon()
+    public static URL buildUrl(String type) {
+        Uri builtUri = Uri.parse(BASE_MOVIE_URL + type).buildUpon()
                 .appendQueryParameter(API_KEY_PARAM, API_KEY)
-                .appendQueryParameter(LANG_PARAM, language)
-                .appendQueryParameter(SORT_PARAM, sort_by)
-                .appendQueryParameter(INCLUDE_ADULT_PARAM, Boolean.FALSE.toString())
-                .appendQueryParameter(INCLUDE_VIDEO_PARAM, Boolean.FALSE.toString())
-                .appendQueryParameter(PAGE_PARAM, numPage)
                 .build();
 
         URL url = null;
