@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public void onClick(String poster) {
         Context context = this;
-        Toast.makeText(context, "onclick", Toast.LENGTH_SHORT)
-                .show();
         Class destinationClass = DetailActivity.class;
         Intent intentToStartDetailActivity = new Intent(context, destinationClass);
         intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, poster);
