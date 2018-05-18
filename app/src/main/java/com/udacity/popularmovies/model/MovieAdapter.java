@@ -14,31 +14,39 @@ import com.udacity.popularmovies.R;
 import java.util.ArrayList;
 
 /**
- * {@link MoviePosterAdapter} provides movie poster images to Recycler view.
+ * {@link MovieAdapter} provides movie poster images to Recycler view.
  * {@link android.support.v7.widget.RecyclerView}
  */
-public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.MoviePosterAdapterViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
     private String[] mMovieData;
-    ArrayList mValues;
-    Context mContext;
-    protected ItemListener mListener;
 
-    public MoviePosterAdapter(Context context, ArrayList values, ItemListener itemListener) {
+    private final MovieAdapterOnClickHandler mClickHandler;
 
-        mValues = values;
-        mContext = context;
-        mListener=itemListener;
+    public interface MovieAdapterOnClickHandler {
+        void onClick(String poster);
+    }
+
+    public MovieAdapter(MovieAdapterOnClickHandler itemListener) {
+        mClickHandler = itemListener;
     }
 
 
-    public class MoviePosterAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public final ImageView mImageView;
 
-        public MoviePosterAdapterViewHolder(View view) {
+        public MovieAdapterViewHolder(View view) {
             super(view);
             mImageView = (ImageView) view.findViewById(R.id.movie_data);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            String data = mMovieData[adapterPosition];
+            mClickHandler.onClick(data);
         }
     }
 
@@ -54,14 +62,14 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
      * @return A new MoviePosterAdapterViewHolder that holds the View for each list item
      */
     @Override
-    public MoviePosterAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public MovieAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.view_item;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
-        return new MoviePosterAdapterViewHolder(view);
+        return new MovieAdapterViewHolder(view);
     }
 
     /**
@@ -70,16 +78,16 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
      * details for this particular position, using the "position" argument that is conveniently
      * passed into us.
      *
-     * @param mMoviePosterAdapterViewHolder The ViewHolder which should be updated to represent the
+     * @param mMovieAdapterViewHolder The ViewHolder which should be updated to represent the
      *                                  contents of the item at the given position in the data set.
      * @param position                  The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(MoviePosterAdapterViewHolder mMoviePosterAdapterViewHolder, int position) {
+    public void onBindViewHolder(MovieAdapterViewHolder mMovieAdapterViewHolder, int position) {
         final String MOVIE_URL = "http://image.tmdb.org/t/p/w185";
         String poster_path = mMovieData[position];
-        Context context =  mMoviePosterAdapterViewHolder.mImageView.getContext();
-        Picasso.with(context).load(MOVIE_URL + poster_path).into(mMoviePosterAdapterViewHolder.mImageView);
+        Context context =  mMovieAdapterViewHolder.mImageView.getContext();
+        Picasso.with(context).load(MOVIE_URL + poster_path).into(mMovieAdapterViewHolder.mImageView);
     }
 
     /**

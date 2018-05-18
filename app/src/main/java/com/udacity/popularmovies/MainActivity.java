@@ -1,6 +1,6 @@
 package com.udacity.popularmovies;
 
-import android.graphics.Bitmap;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.udacity.popularmovies.model.MoviePosterAdapter;
+import com.udacity.popularmovies.model.MovieAdapter;
 import com.udacity.popularmovies.utils.MovieJsonUtils;
 import com.udacity.popularmovies.utils.NetworkUtils;
 
@@ -21,12 +21,12 @@ import java.net.URL;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
     private static final String POPULAR = "popular";
     private static final String TOP_RATED = "top_rated";
 
-    private MoviePosterAdapter mAdapter;
+    private MovieAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
 
     @BindView(R.id.recyclerView)
@@ -53,12 +53,17 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter
-        mAdapter = new MoviePosterAdapter();
+        mAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
-
         loadMovieData(POPULAR);
+    }
 
+    @Override
+    public void onClick(String poster) {
+        Context context = this;
+        Toast.makeText(context, "onclick", Toast.LENGTH_SHORT)
+                .show();
     }
 
     /**
