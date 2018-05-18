@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 .show();
         Class destinationClass = DetailActivity.class;
         Intent intentToStartDetailActivity = new Intent(context, destinationClass);
+        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, poster);
         startActivity(intentToStartDetailActivity);
     }
 
