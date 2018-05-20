@@ -19,12 +19,12 @@ import java.util.ArrayList;
  */
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
-    private String[] mMovieData;
+    private Movie[] mMovieData;
 
     private final MovieAdapterOnClickHandler mClickHandler;
 
     public interface MovieAdapterOnClickHandler {
-        void onClick(String poster);
+        void onClick(Movie movie);
     }
 
     public MovieAdapter(MovieAdapterOnClickHandler itemListener) {
@@ -38,15 +38,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         public MovieAdapterViewHolder(View view) {
             super(view);
-            mImageView = (ImageView) view.findViewById(R.id.movie_data);
+            mImageView = (ImageView) view.findViewById(R.id.movie_poster);
             view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            String data = mMovieData[adapterPosition];
-            mClickHandler.onClick(data);
+            Movie movie = mMovieData[adapterPosition];
+            mClickHandler.onClick(movie);
         }
     }
 
@@ -85,9 +85,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder mMovieAdapterViewHolder, int position) {
         final String MOVIE_URL = "http://image.tmdb.org/t/p/w185";
-        String poster_path = mMovieData[position];
+        Movie movie = mMovieData[position];
         Context context =  mMovieAdapterViewHolder.mImageView.getContext();
-        Picasso.with(context).load(MOVIE_URL + poster_path).into(mMovieAdapterViewHolder.mImageView);
+        Picasso.with(context).load(MOVIE_URL + movie.getPoster_path())
+                .into(mMovieAdapterViewHolder.mImageView);
     }
 
     /**
@@ -108,7 +109,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
      *
      * @param movieData The new movie data to be displayed.
      */
-    public void setMovieData(String[] movieData) {
+    public void setMovieData(Movie[] movieData) {
         mMovieData = movieData;
         notifyDataSetChanged();
     }

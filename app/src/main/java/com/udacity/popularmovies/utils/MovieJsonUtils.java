@@ -5,6 +5,9 @@ package com.udacity.popularmovies.utils;
  */
 
 import android.content.Context;
+
+import com.udacity.popularmovies.model.Movie;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,25 +30,33 @@ public final class MovieJsonUtils {
      *
      * @throws JSONException If JSON data cannot be properly parsed
      */
-    public static String[] getMoviePosterStringsFromJson(Context context, String movieJsonStr)
+    public static Movie[] getMoviesFromJson(Context context, String movieJsonStr)
             throws JSONException {
 
         final String MOVIE_RESULTS = "results";
-        final String POSTER_PATH = "poster_path";
 
         /* String array to hold movie poster String */
-        String[] parsedMovieData = null;
+        Movie[] parsedMovieData = null;
 
         JSONObject movieJson = new JSONObject(movieJsonStr);
         JSONArray resultsArray = movieJson.getJSONArray(MOVIE_RESULTS);
-        parsedMovieData = new String[resultsArray.length()];
+
+        parsedMovieData = new Movie[resultsArray.length()];
+
         for (int i = 0; i < resultsArray.length(); i++) {
              /* Get the JSON object representing a movie */
-            JSONObject movie = resultsArray.getJSONObject(i);
-            parsedMovieData[i] = movie.getString(POSTER_PATH);
+            JSONObject movie_json = resultsArray.getJSONObject(i);
+            int id = Integer.parseInt(movie_json.getString("id"));
+            String title = movie_json.getString("title");
+            String release_date = movie_json.getString("release_date");
+            String poster_path = movie_json.getString("poster_path");
+            String overview = movie_json.getString("overview");
+            String vote_average = movie_json.getString("vote_average");
+
+            parsedMovieData[i] = new Movie(id, title, release_date, vote_average, poster_path,
+                    overview);
         }
         return parsedMovieData;
     }
-
 
 }
