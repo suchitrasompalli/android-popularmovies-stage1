@@ -53,7 +53,7 @@ public final class MovieJsonUtils {
             String overview = movie_json.getString("overview");
             String vote_average = movie_json.getString("vote_average");
 
-            parsedMovieData[i] = new Movie(id, title, release_date, vote_average, poster_path,
+            parsedMovieData[i] = new Movie(id, title, poster_path, vote_average, release_date,
                     overview);
         }
         return parsedMovieData;

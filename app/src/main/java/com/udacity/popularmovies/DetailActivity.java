@@ -2,10 +2,10 @@ package com.udacity.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.model.Movie;
@@ -19,19 +19,20 @@ import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private Movie movie;
-
     @BindView(R.id.poster)
     ImageView mPosterDisplay;
 
     @BindView(R.id.title)
-    ImageView mTitle;
+    TextView mTitle;
 
     @BindView(R.id.release_date)
-    ImageView mReleaseDate;
+    TextView mReleaseDate;
 
     @BindView(R.id.user_rating)
-    ImageView mUserRating;
+    TextView mUserRating;
+
+    @BindView(R.id.overview)
+    TextView mOverview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +41,15 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intentThatStartedThisActivity = getIntent();
-        Movie mMovie = (Movie) getIntent().getParcelableExtra("moviedata");
+        Movie mMovie = (Movie) intentThatStartedThisActivity.getParcelableExtra("Movie");
         final String MOVIE_URL = "http://image.tmdb.org/t/p/w185";
-        String poster_path = movie.getPoster_path();
+        String poster_path = mMovie.getPoster_path();
         Context context = mPosterDisplay.getContext();
         Picasso.with(context).load(MOVIE_URL + poster_path).into(mPosterDisplay);
+        mTitle.setText(mMovie.getTitle());
+        mReleaseDate.setText(mMovie.getRelease_date());
+        mUserRating.setText(mMovie.getUser_rating());
+        mOverview.setText(mMovie.getOverview());
     }
 
 }

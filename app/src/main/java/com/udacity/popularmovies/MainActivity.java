@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.udacity.popularmovies.model.Movie;
-import com.udacity.popularmovies.model.MovieAdapter;
 import com.udacity.popularmovies.utils.MovieJsonUtils;
 import com.udacity.popularmovies.utils.NetworkUtils;
 
@@ -30,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private MovieAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
+    private String movieType;
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -61,12 +61,20 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         loadMovieData(POPULAR);
     }
 
+    public String getMovieType() {
+        return movieType;
+    }
+
+    public String setMovieType(String movieType) {
+        this.movieType = movieType;
+    }
+
     @Override
     public void onClick(Movie movie) {
         Context context = this;
         Class destinationClass = DetailActivity.class;
         Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-        intentToStartDetailActivity.putExtra("movieData", movie);
+        intentToStartDetailActivity.putExtra("Movie", movie);
         startActivity(intentToStartDetailActivity);
     }
 

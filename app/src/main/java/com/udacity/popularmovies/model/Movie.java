@@ -17,12 +17,12 @@ public class Movie implements Parcelable {
     private String user_rating;
     private int id;
 
-    public Movie(int id, String title, String vote_average, String poster_path, String release_date,
+    public Movie(int id, String title, String poster_path, String user_rating, String release_date,
                  String overview)
     {
         this.title = title;
         this.release_date = release_date;
-        this.user_rating = vote_average;
+        this.user_rating = user_rating;
         this.overview = overview;
         this.poster_path = poster_path;
         this.id = id;
