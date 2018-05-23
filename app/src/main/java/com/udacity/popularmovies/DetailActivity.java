@@ -34,6 +34,9 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.overview)
     TextView mOverview;
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

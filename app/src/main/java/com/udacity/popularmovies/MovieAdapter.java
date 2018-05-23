@@ -27,16 +27,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         void onClick(Movie movie);
     }
 
+    /**
+     * @param clickHandler
+     */
     public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
     }
 
 
+    /**
+     *
+     */
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.movie_poster)
         ImageView mImageView;
 
+        /**
+         * @param view
+         */
         public MovieAdapterViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -44,6 +53,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
             view.setOnClickListener(this);
         }
 
+        /**
+         * @param v
+         */
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
