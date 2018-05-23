@@ -22,8 +22,12 @@ import java.net.URL;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Main class to display a set of movie posters with default choice of most popular movies.
+ */
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
+    // the 2 choice are Popular and Top rated movies.
     private static final String POPULAR = "popular";
     private static final String TOP_RATED = "top_rated";
 
@@ -40,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @BindView(R.id.pb_loading_indicator)
     ProgressBar mLoadingIndicator;
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,17 +65,30 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
-        loadMovieData(POPULAR);
+        if (movieType == null) {
+            movieType = POPULAR;
+        }
+        loadMovieData(movieType);
     }
 
+    /**
+     * @return movieType
+     */
     public String getMovieType() {
-        return movieType;
+        return this.movieType;
     }
 
-    public String setMovieType(String movieType) {
+    /**
+     * @param movieType
+     */
+    public void setMovieType(String movieType) {
         this.movieType = movieType;
     }
 
+    /**
+     * When a poster image is clicked a intent is used to start the detail activity.
+     * @param movie
+     */
     @Override
     public void onClick(Movie movie) {
         Context context = this;
@@ -80,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     /**
      * This method will start the Async task.
+     * @param type
      */
     private void loadMovieData(String type) {
         showMovieDataView();
@@ -109,6 +130,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * @param menu
+     * @return boolean
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -121,17 +146,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         switch(item.getItemId()) {
             case R.id.most_popular:
                 Toast.makeText(this, R.string.most_popular, Toast.LENGTH_LONG).show();
-                loadMovieData(POPULAR);
+                movieType = POPULAR;
+                loadMovieData(movieType);
                 return(true);
             case R.id.top_rated:
                 Toast.makeText(this, R.string.top_rated, Toast.LENGTH_LONG).show();
-                loadMovieData(TOP_RATED);
+                movieType = TOP_RATED;
+                loadMovieData(movieType);
                 return(true);
 
         }
         return(super.onOptionsItemSelected(item));
     }
 
+    /**
+     * AsynTask that gets movie data using Network Utils.
+     */
     public class FetchMovieDataTask extends AsyncTask<String, Void, Movie[]> {
 
         @Override
@@ -140,6 +170,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             super.onPreExecute();
         }
 
+        /**
+         * @param params will have the criteria for movies display
+         * @return Movie[]
+         */
         @Override
         protected Movie[] doInBackground(String... params) {
 
@@ -148,8 +182,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 return null;
             }
 
-            String sort_by = params[0];
-            URL movieRequestUrl = NetworkUtils.buildUrl(sort_by);
+            String sort_by_type = params[0];
+            URL movieRequestUrl = NetworkUtils.buildUrl(sort_by_type);
 
             try {
                 String jsonResponse = NetworkUtils
@@ -166,6 +200,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             }
         }
 
+        /**
+         * Hides loading indicator and sends movieData to MovieAdapter
+         * @param movieData
+         */
         @Override
         protected void onPostExecute(Movie[] movieData) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
