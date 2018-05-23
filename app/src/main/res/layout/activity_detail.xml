@@ -12,7 +12,7 @@
         <android.widget.LinearLayout
             android:id="@+id/title_linear"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="@dimen/title_layout_height"
             android:background="@color/colorPrimary">
 
             <TextView
@@ -23,13 +23,13 @@
                 android:layout_marginLeft="@dimen/text_margin"
                 android:hint="Title Location"
                 android:textColor="@color/colorAccent"
-                android:textSize="40sp"/>
+                android:textSize="@dimen/title_text_size"/>
         </android.widget.LinearLayout>
 
         <ImageView
             android:id="@+id/poster"
-            android:layout_width="100dp"
-            android:layout_height="150dp"
+            android:layout_width="@dimen/poster_thumbprint_width"
+            android:layout_height="@dimen/poster_thumbprint_height"
             android:layout_below="@id/title_linear"
             android:layout_marginTop="@dimen/text_margin"
             android:layout_marginLeft="@dimen/text_margin" />
@@ -47,8 +47,8 @@
                 android:id="@+id/release_date_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginLeft="@dimen/left_margin"
+                android:layout_marginTop="@dimen/left_margin"
                 android:text="Release Date"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp" />
@@ -57,28 +57,28 @@
                 android:id="@+id/release_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
+                android:layout_marginLeft="@dimen/left_margin"
                 android:hint="12/21/2019"
-                android:textSize="20sp" />
+                android:textSize="@dimen/text_size" />
 
             <TextView
                 android:id="@+id/user_rating_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/top_margin"
                 android:textColor="@color/colorPrimary"
-                android:layout_marginLeft="32dp"
+                android:layout_marginLeft="@dimen/left_margin"
                 android:text="User Rating"
-                android:textSize="20sp" />
+                android:textSize="@dimen/text_size" />
 
             <TextView
                 android:id="@+id/user_rating"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="32dp"
-                android:hint="5658u"
-                android:textSize="20sp" />
+                android:layout_marginLeft="@dimen/left_margin"
+                android:hint="5"
+                android:textSize="@dimen/text_size" />
 
         </android.widget.LinearLayout>
 
@@ -88,9 +88,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_margin"
             android:layout_marginTop="@dimen/fab_margin"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/bottom_margin"
             android:layout_below="@id/poster"
-            android:textSize="20sp" />
+            android:textSize="@dimen/text_size" />
 
     </android.widget.RelativeLayout>
 </ScrollView>
