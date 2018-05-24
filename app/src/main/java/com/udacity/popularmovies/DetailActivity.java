@@ -1,11 +1,15 @@
 package com.udacity.popularmovies;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.model.Movie;
@@ -53,6 +57,36 @@ public class DetailActivity extends AppCompatActivity {
         mReleaseDate.setText(mMovie.getRelease_date());
         mUserRating.setText(mMovie.getUser_rating());
         mOverview.setText(mMovie.getOverview());
+    }
+    /**
+     * @param menu
+     * @return boolean
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Class destinationClass = MainActivity.class;
+        Intent intent = new Intent(this, destinationClass);
+        switch(item.getItemId()) {
+            case R.id.most_popular:
+                intent.putExtra("type", MainActivity.POPULAR);
+                this.finish();
+                startActivity(intent);
+                return(true);
+            case R.id.top_rated:
+                intent.putExtra("type", MainActivity.TOP_RATED);
+                this.finish();
+                startActivity(intent);
+                return(true);
+
+        }
+        return(super.onOptionsItemSelected(item));
     }
 
 }

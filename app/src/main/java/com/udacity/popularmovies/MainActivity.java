@@ -28,8 +28,8 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
     // the 2 choice are Popular and Top rated movies.
-    private static final String POPULAR = "popular";
-    private static final String TOP_RATED = "top_rated";
+    public static final String POPULAR = "popular";
+    public static final String TOP_RATED = "top_rated";
 
     private MovieAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
@@ -68,7 +68,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (movieType == null) {
             movieType = POPULAR;
         }
-        loadMovieData(movieType);
+        loadMovieData();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        String type = intent.getStringExtra("type");
+        if (type != null) {
+            movieType = type;
+        }
+        loadMovieData();
     }
 
     /**
@@ -100,11 +109,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     /**
      * This method will start the Async task.
-     * @param type
+     *
      */
-    private void loadMovieData(String type) {
+    private void loadMovieData() {
         showMovieDataView();
-        new FetchMovieDataTask().execute(type);
+        new FetchMovieDataTask().execute(movieType);
     }
 
     /**
@@ -147,12 +156,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             case R.id.most_popular:
                 Toast.makeText(this, R.string.most_popular, Toast.LENGTH_LONG).show();
                 movieType = POPULAR;
-                loadMovieData(movieType);
+                loadMovieData();
                 return(true);
             case R.id.top_rated:
                 Toast.makeText(this, R.string.top_rated, Toast.LENGTH_LONG).show();
                 movieType = TOP_RATED;
-                loadMovieData(movieType);
+                loadMovieData();
                 return(true);
 
         }
