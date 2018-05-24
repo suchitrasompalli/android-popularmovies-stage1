@@ -1,7 +1,7 @@
 package com.udacity.popularmovies.utils;
 
-/**
- * Created by suchitrasompalli on 5/11/2018.
+/*
+  Created by suchitrasompalli on 5/11/2018.
  */
 
 import android.content.Context;

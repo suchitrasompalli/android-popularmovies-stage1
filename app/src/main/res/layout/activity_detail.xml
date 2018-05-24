@@ -32,7 +32,8 @@
             android:layout_height="@dimen/poster_thumbprint_height"
             android:layout_below="@id/title_linear"
             android:layout_marginTop="@dimen/text_margin"
-            android:layout_marginLeft="@dimen/text_margin" />
+            android:layout_marginLeft="@dimen/text_margin"
+            android:contentDescription="@string/movie_poster" />
 
         <android.widget.LinearLayout
             android:layout_width="match_parent"
