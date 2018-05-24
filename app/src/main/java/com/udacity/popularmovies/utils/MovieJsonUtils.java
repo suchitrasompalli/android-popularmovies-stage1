@@ -22,7 +22,7 @@ public final class MovieJsonUtils {
 
     private static final String JSON_MOVIE_RESULTS_KEY = "results";
     private static final String JSON_ID_KEY = "id";
-    private static final String JSON_TITLE_KEY = "results";
+    private static final String JSON_TITLE_KEY = "title";
     private static final String JSON_RELEASE_DATE_KEY = "release_date";
     private static final String JSON_POSTER_PATH_KEY = "poster_path";
     private static final String JSON_OVERVIEW_KEY = "overview";
