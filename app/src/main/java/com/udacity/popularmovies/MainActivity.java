@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private MovieAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
     private String movieType;
+    private Movie[] movies;
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -68,7 +70,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (movieType == null) {
             movieType = POPULAR;
         }
-        loadMovieData();
+        Log.d("on create","movies");
+        if (movies == null) {
+            loadMovieData();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArray("movieData", movies);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        movies = (Movie[]) savedInstanceState.getParcelableArray("movieData");
     }
 
     @Override
@@ -114,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private void loadMovieData() {
         showMovieDataView();
         new FetchMovieDataTask().execute(movieType);
+
     }
 
     /**
@@ -155,11 +173,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         switch(item.getItemId()) {
             case R.id.most_popular:
                 Toast.makeText(this, R.string.most_popular, Toast.LENGTH_LONG).show();
-                movieType = POPULAR;
-                loadMovieData();
+                if (movieType.equals(POPULAR) != true) {
+                    movieType = POPULAR;
+                    loadMovieData();
+                }
                 return(true);
             case R.id.top_rated:
                 Toast.makeText(this, R.string.top_rated, Toast.LENGTH_LONG).show();
+                if (movieType.equals(TOP_RATED) != true) {
+                    movieType = TOP_RATED;
+                    loadMovieData();
+                }
                 movieType = TOP_RATED;
                 loadMovieData();
                 return(true);
@@ -217,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         protected void onPostExecute(Movie[] movieData) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (movieData != null) {
+                movies = movieData;
                 mAdapter.setMovieData(movieData);
             } else {
                 showErrorMessage();
