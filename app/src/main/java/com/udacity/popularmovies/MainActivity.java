@@ -2,8 +2,10 @@ package com.udacity.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @BindView(R.id.pb_loading_indicator)
     ProgressBar mLoadingIndicator;
 
+    private SharedPreferences sharedPref = null;
     /**
      * @param savedInstanceState
      */
@@ -67,9 +70,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
-        if (movieType == null) {
-            movieType = POPULAR;
-        }
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        movieType = sharedPref.getString(getString(R.string.movie_type), POPULAR);
+        
         Log.d("on create","movies");
         if (movies == null) {
             loadMovieData();
@@ -174,6 +177,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             case R.id.most_popular:
                 Toast.makeText(this, R.string.most_popular, Toast.LENGTH_LONG).show();
                 if (movieType.equals(POPULAR) != true) {
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString(getString(R.string.movie_type), POPULAR);
+                    editor.commit();
                     movieType = POPULAR;
                     loadMovieData();
                 }
@@ -181,6 +187,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             case R.id.top_rated:
                 Toast.makeText(this, R.string.top_rated, Toast.LENGTH_LONG).show();
                 if (movieType.equals(TOP_RATED) != true) {
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString(getString(R.string.movie_type), TOP_RATED);
+                    editor.commit();
                     movieType = TOP_RATED;
                     loadMovieData();
                 }
