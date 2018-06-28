@@ -10,5 +10,6 @@
     <string name="title_activity_detail">detail</string>
     <string name="preference_file_name">preferences</string>
     <string name="movie_type">popular</string>
+    <string name="favorite">Favorite</string>
 
 </resources>

@@ -25,6 +25,8 @@ import java.net.URL;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.udacity.popularmovies.R.string.favorite;
+
 /**
  * Main class to display a set of movie posters with default choice of most popular movies.
  */
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     // the 2 choice are Popular and Top rated movies.
     public static final String POPULAR = "popular";
     public static final String TOP_RATED = "top_rated";
+    public static final String FAVORITES = "favorites";
 
     private MovieAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
@@ -72,11 +75,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setHasFixedSize(true);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         movieType = sharedPref.getString(getString(R.string.movie_type), POPULAR);
-        
+
         Log.d("on create","movies");
-        if (movies == null) {
-            loadMovieData();
+        if (savedInstanceState != null) {
+            movies = (Movie[]) savedInstanceState.getParcelableArray("movieData");
         }
+        loadMovieData();
     }
 
     @Override
@@ -194,6 +198,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     loadMovieData();
                 }
                 movieType = TOP_RATED;
+                loadMovieData();
+                return(true);
+            case R.id.favorite:
+                Toast.makeText(this, R.string.favorite, Toast.LENGTH_LONG).show();
+                if (movieType.equals(FAVORITES) != true) {
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString(getString(R.string.movie_type), FAVORITES);
+                    editor.commit();
+                    movieType = FAVORITES;
+                    loadMovieData();
+                }
+                movieType = FAVORITES;
                 loadMovieData();
                 return(true);
 

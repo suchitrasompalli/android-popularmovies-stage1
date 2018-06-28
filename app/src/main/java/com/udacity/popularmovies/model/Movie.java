@@ -16,6 +16,7 @@ public class Movie implements Parcelable {
     private String release_date;
     private String user_rating;
     private int id;
+    //private String[] trailers;
 
     /**
      * @param id
